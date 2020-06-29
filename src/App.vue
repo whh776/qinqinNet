@@ -1,28 +1,69 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="App">
+    <!-- 头部 -->
+    <Tabs v-if="tabsFlag"></Tabs>
+    <!-- 中间内容 -->
+    <div class="content">
+      <router-view></router-view>
+    </div>
+    <!-- 底部 -->
+    <Tabbar v-if="tabbarFlag"></Tabbar>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import Tabs from "./components/tab";
+import Tabbar from "./components/tabbar";
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
+    Tabs,
+    Tabbar
+  },
+  data(){
+    return({
+      tabsFlag:true,
+      tabbarFlag:true,
+    })
+  },
+  watch:{
+    $route(){
+      const {path}=this.$route
+      const arr=['/detail']
+      const arr1=['/my','/type',"/login", "/register"]
+      let f=arr.some(item=>item===path)
+      let f1=arr1.some(item=>item===path)
+      if(f){
+        this.tabsFlag=false
+        this.tabbarFlag=false
+      }else{
+        this.tabsFlag=true
+        this.tabbarFlag=true
+      }
+      if(f1){
+        this.tabsFlag=false
+        // this.tabbarFlag=false
+      }else{
+        this.tabsFlag=true
+        // this.tabbarFlag=true
+      }
+    }
   }
-}
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style lang="less">
+@import "./style/reset.css";
+#App{
+  // height:100%;
+  width: 3.75rem;
+  display:flex;
+  flex-direction: column;
+  // background:blue;
+  .content {
+    flex: 1;
+    height: 100%;
+    // overflow: hidden;
+  }
 }
 </style>
